@@ -1,5 +1,5 @@
-import { el } from "redom";
-import ContactForm from "./contact-form";
+import { el } from 'redom';
+import ContactForm from './contact-form';
 
 export default class Quiz {
   _questions;
@@ -12,14 +12,14 @@ export default class Quiz {
     this._description = descriptin;
 
     // Текст с вопросом и варианты ответа
-    this._question = el(".quiz__question");
-    this._answers = el("ul.quiz__answers-list", []);
+    this._question = el('.quiz__question');
+    this._answers = el('ul.quiz__answers-list', []);
 
     // Кнопки `Назад`  и `Далее`
-    this._btnPrev = el("button.btn quiz__btn-prev", "Назад");
-    this._btnNext = el("button.btn quiz__btn-next", "Далее");
-    this._btnPrev.addEventListener("click", () => this.prevStep());
-    this._btnNext.addEventListener("click", () => this.nextStep());
+    this._btnPrev = el('button.btn quiz__btn-prev', 'Назад');
+    this._btnNext = el('button.btn quiz__btn-next', 'Далее');
+    this._btnPrev.addEventListener('click', () => this.prevStep());
+    this._btnNext.addEventListener('click', () => this.nextStep());
 
     // Текущий шаг
     this.currentStep = 1;
@@ -27,28 +27,28 @@ export default class Quiz {
     // Общее количество шагов
     this.stepsCount = 0;
     this.stepCounter = el(
-      ".quiz__step-counter",
+      '.quiz__step-counter',
       `Шаг ${this.currentStep}/${this.stepsCount}`
     );
 
     // Разметка компонента
     this._html = el(
-      ".container",
-      el(".quiz", [
-        el(".quiz__description", [
-          el("h1.quiz__title", this._title),
-          el("p.quiz__description-text", this._description),
-          el(".quiz__picture", [
-            el(".quiz__picture-background"),
-            el(".quiz__picture-badge-time", "за 30 секунд"),
-            el(".quiz__picture-badge-price", "Бесплатно"),
-            el(".quiz__picture-circle"),
+      '.container',
+      el('.quiz', [
+        el('.quiz__description', [
+          el('h1.quiz__title', this._title),
+          el('p.quiz__description-text', this._description),
+          el('.quiz__picture', [
+            el('.quiz__picture-background'),
+            el('.quiz__picture-badge-time', 'за 30 секунд'),
+            el('.quiz__picture-badge-price', 'Бесплатно'),
+            el('.quiz__picture-circle'),
           ]),
         ]),
-        el(".quiz__steps", [
-          el(".quiz__steps-top-panel", [this._question, this.stepCounter]),
-          el(".quiz__steps-middle-panel", this._answers),
-          el(".quiz__steps-bottom-panel", [this._btnPrev, this._btnNext]),
+        el('.quiz__steps', [
+          el('.quiz__steps-top-panel', [this._question, this.stepCounter]),
+          el('.quiz__steps-middle-panel', this._answers),
+          el('.quiz__steps-bottom-panel', [this._btnPrev, this._btnNext]),
         ]),
       ])
     );
@@ -97,7 +97,7 @@ export default class Quiz {
           alert(this.userAnswers);
         },
       });
-      const steps = document.querySelector(".quiz__steps");
+      const steps = document.querySelector('.quiz__steps');
       steps.replaceChildren(contactForm.html);
     }
     // В остальных случаях обрабатываем вопросы
@@ -112,17 +112,17 @@ export default class Quiz {
 
       // Устанавливаем текст в счётчике шагов
       this.stepCounter.innerText = `Шаг ${this.currentStep}/${this.stepsCount}`;
-      const panel = document.querySelector(".quiz__steps-middle-panel");
+      const panel = document.querySelector('.quiz__steps-middle-panel');
 
       // Если вопрос с несколькими вариантами ответа - добавим чекбоксы
-      if (currentQuestion.type === "checkbox") {
-        const listItems = el("ul.listreset dropdown__list");
-        const dropdownList = el(".dropdown__menu", listItems);
+      if (currentQuestion.type === 'checkbox') {
+        const listItems = el('ul.listreset dropdown__list');
+        const dropdownList = el('.dropdown__menu', listItems);
         const dropdownButton = el(
-          "button.btn dropdown__button",
+          'button.btn dropdown__button',
           currentQuestion?.placeholder
         );
-        const dropdown = el(".dropdown quiz__dropdown", [
+        const dropdown = el('.dropdown quiz__dropdown', [
           dropdownButton,
           dropdownList,
         ]);
@@ -130,18 +130,18 @@ export default class Quiz {
         panel.replaceChild(dropdown, this._answers);
 
         for (const answer of currentQuestion?.answers) {
-          const checkbox = el("input.input", {
-            type: "checkbox",
+          const checkbox = el('input.input', {
+            type: 'checkbox',
             value: answer.id,
           });
 
           // добавляем обработчик изменения выбранного элемента
-          checkbox.addEventListener("change", () => {
+          checkbox.addEventListener('change', () => {
             // записываем выбранные варианты
             this.setUserAnswer(true);
 
             // Формируем строку в заголовке
-            let title = "";
+            let title = '';
             const selected = this.userAnswers[currentQuestion.id];
             if (selected.length === 0) {
               title = currentQuestion.placeholder;
@@ -164,10 +164,10 @@ export default class Quiz {
           });
 
           const item = el(
-            "li.dropdowd__list-item",
-            el("label.dropdown__list-item-label", answer.value, [
+            'li.dropdowd__list-item',
+            el('label.dropdown__list-item-label', answer.value, [
               checkbox,
-              el("span.checkmark"),
+              el('span.checkmark'),
             ])
           );
           listItems.append(item);
@@ -178,28 +178,28 @@ export default class Quiz {
 
       // Для остальных вопросов отображаем список с radio-кнопкой
       else {
-        const list = el("ul.quiz__answers-list");
+        const list = el('ul.quiz__answers-list');
         panel.replaceChild(list, this._answers);
         this._answers = list;
 
         for (const answer of currentQuestion?.answers) {
-          const input = el("input.input quiz__input", {
+          const input = el('input.input quiz__input', {
             type: currentQuestion.type,
             value: answer.id,
-            name: "quiz",
+            name: 'quiz',
             id: `quiz${answer.id}`,
           });
 
           // добавляем обработчик изменения выбранного элемента
-          input.addEventListener("change", () => this.setUserAnswer());
-          const quizAnswer = el("li.quiz__answer", [
+          input.addEventListener('change', () => this.setUserAnswer());
+          const quizAnswer = el('li.quiz__answer', [
             input,
             el(
-              "label.quiz__answer-label",
+              'label.quiz__answer-label',
               { for: `quiz${answer.id}` },
               answer.value
             ),
-            el("span.checkmark"),
+            el('span.checkmark'),
           ]);
           this._answers.append(quizAnswer);
         }
@@ -219,7 +219,7 @@ export default class Quiz {
 
     let answer;
     if (isCheckbox) {
-      answer = [...document.querySelectorAll(".input:checked")].map(
+      answer = [...document.querySelectorAll('.input:checked')].map(
         (e) => e.value
       );
     } else answer = document.querySelector('input[name="quiz"]:checked').value;
@@ -239,7 +239,7 @@ export default class Quiz {
         state = false;
       }
     }
-    this._btnNext.toggleAttribute("disabled", state);
+    this._btnNext.toggleAttribute('disabled', state);
   }
 
   /** Отмечает выбранные пользователем элементы */
@@ -264,7 +264,7 @@ export default class Quiz {
   setAnswerListColumns() {
     const currentQuestion = this._questions[this.currentStep - 1];
     this._answers.classList.toggle(
-      "quiz__answers-list--single-column",
+      'quiz__answers-list--single-column',
       currentQuestion.answers.length < 4
     );
   }
